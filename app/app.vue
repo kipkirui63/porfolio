@@ -35,8 +35,13 @@ const typedRole = ref('')
 const roles = ['builder.', 'developer.', 'researcher.', 'engineer.']
 
 const experienceItems = [
-  { label: 'CrispAI', short: 'S', className: 'sandlogic' },
-  { label: 'Delta Freight', short: 'DFA', className: 'iui' },
+  { label: 'Sandlogic', short: 'S', className: 'sandlogic', logo: '/sandlogic.png' },
+  {
+    label: 'Crisp AI',
+    short: 'C',
+    className: 'crispai',
+    logo: 'https://businessintelligenceagent.crispai.ca/crisp-logo.png'
+  },
   { label: 'Fuzu LTD', short: 'F', className: 'iub' }
 ]
 
@@ -65,7 +70,8 @@ const activeProject = {
   badge: 'ACTIVE',
   sub: 'One click. Issue fixed. PR merged.',
   title: 'Building',
-  accent: 'AutoFlow.'
+  accent: 'AutoFlow.',
+  href: 'https://github.com/kipkirui63/gitfix'
 }
 
 const bigProjects = [
@@ -86,6 +92,48 @@ const bigProjects = [
     tagline: 'IoT smart lock for student welfare.',
     variant: 'green',
     emoji: '🔒'
+  },
+  {
+    name: 'Coffee Data Analysis',
+    tagline: 'Coffee dataset exploration and insights.',
+    href: 'https://github.com/kipkirui63/cofee-data-analysis',
+    variant: 'amber',
+    header: 'Python · Data Analysis'
+  },
+  {
+    name: 'GitFix',
+    tagline: 'Developer tooling for fixing Git workflows.',
+    href: 'https://github.com/kipkirui63/gitfix',
+    variant: 'dark',
+    header: 'Git Automation'
+  },
+  {
+    name: 'Farmart',
+    tagline: 'A marketplace experience for farm products.',
+    href: 'https://the-farmart.onrender.com/',
+    variant: 'green',
+    header: 'Farmart Marketplace'
+  },
+  {
+    name: 'Wine Reference App',
+    tagline: 'Search and reference wine information.',
+    href: 'https://wine-reference-app.vercel.app/',
+    variant: 'wine',
+    header: 'Wine Reference'
+  },
+  {
+    name: 'Business Intelligence Agent',
+    tagline: 'Ask business questions and get AI-assisted insights.',
+    href: 'https://businessintelligenceagent.crispai.ca/',
+    variant: 'blue',
+    header: 'BI Agent'
+  },
+  {
+    name: 'CrispAI',
+    tagline: 'AI automation products and client solutions.',
+    href: 'https://www.crispai.ca/',
+    variant: 'dark',
+    header: 'CrispAI'
   }
 ]
 
@@ -208,7 +256,15 @@ onBeforeUnmount(() => {
                 class="exp-logo-item"
               >
                 <div class="exp-logo-icon" :class="item.className">
-                  {{ item.short }}
+                  <img
+                    v-if="item.logo"
+                    :src="item.logo"
+                    :alt="`${item.label} logo`"
+                    class="exp-logo-image"
+                  >
+                  <template v-else>
+                    {{ item.short }}
+                  </template>
                 </div>
                 <span>{{ item.label }}</span>
               </article>
@@ -232,15 +288,20 @@ onBeforeUnmount(() => {
               <div class="resume-icon">📄</div>
             </section>
 
-            <section class="card project-card project-card-compact">
+            <a
+              href="https://the-farmart.onrender.com/"
+              class="card project-card project-card-compact"
+              target="_blank"
+              rel="noreferrer"
+            >
               <div class="project-badge">
                 <span class="project-badge-dot" />
-                Published
-                <span class="project-year">arXiv · 2025</span>
+                Live
+                <span class="project-year">Farmart</span>
               </div>
-              <div class="project-name">LeadGen Pro</div>
-              <div class="project-desc">AI-powered lead generation & automation</div>
-            </section>
+              <div class="project-name">Farmart</div>
+              <div class="project-desc">Marketplace experience for farm products</div>
+            </a>
           </div>
         </div>
       </div>
@@ -265,8 +326,8 @@ onBeforeUnmount(() => {
         <section class="card edu-card">
           <span class="edu-year">2024</span>
           <div class="edu-logo">U</div>
-          <div class="edu-name">University of Nairobi</div>
-          <div class="edu-degree">Bachelor's in Computer Science</div>
+          <div class="edu-name">Moringa School</div>
+          <div class="edu-degree">Software Engineer</div>
         </section>
 
         <section class="card live-card">
@@ -312,22 +373,31 @@ onBeforeUnmount(() => {
           </a>
         </section>
 
-        <section class="card active-card">
+        <a
+          :href="activeProject.href"
+          class="card active-card"
+          target="_blank"
+          rel="noreferrer"
+        >
           <div class="active-badge">{{ activeProject.badge }}</div>
           <div class="active-sub">{{ activeProject.sub }}</div>
           <div class="active-title">
             {{ activeProject.title }}
             <span>{{ activeProject.accent }}</span>
           </div>
-        </section>
+        </a>
       </div>
 
       <div id="work" class="section-label">Projects</div>
       <div class="projects-grid">
-        <article
+        <component
+          :is="project.href ? 'a' : 'article'"
           v-for="project in bigProjects"
           :key="project.name"
+          :href="project.href"
           class="project-big-card"
+          target="_blank"
+          rel="noreferrer"
         >
           <div class="proj-content">
             <div class="proj-name">{{ project.name }}</div>
@@ -362,7 +432,7 @@ onBeforeUnmount(() => {
               </div>
             </div>
           </div>
-        </article>
+        </component>
       </div>
 
       <div class="cta-section">
@@ -568,6 +638,11 @@ a {
   animation: fade-up 0.55s ease both;
 }
 
+.project-big-card {
+  color: inherit;
+  text-decoration: none;
+}
+
 .hero-card {
   position: relative;
   display: flex;
@@ -673,24 +748,38 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 66px;
+  height: 66px;
   border-radius: 10px;
   font-size: 22px;
   font-weight: 700;
 }
 
 .exp-logo-icon.sandlogic {
-  background: #1a1a2e;
-  color: #ffffff;
+  background: #ffffff;
+  color: #1a1a2e;
+  width: 76px;
+  height: 76px;
+  padding: 3px;
 }
 
-.exp-logo-icon.iui,
+.exp-logo-icon.crispai {
+  background: #ffffff;
+  padding: 7px;
+}
+
 .exp-logo-icon.iub {
   background: #990000;
   color: #ffffff;
   font-size: 14px;
   letter-spacing: -0.5px;
+}
+
+.exp-logo-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .exp-logo-item span {
@@ -829,6 +918,8 @@ a {
 
 .project-card {
   cursor: pointer;
+  color: inherit;
+  text-decoration: none;
   transition: background 0.2s ease;
 }
 
@@ -1056,6 +1147,8 @@ a {
   flex-direction: column;
   gap: 8px;
   padding: 24px 28px;
+  color: inherit;
+  text-decoration: none;
 }
 
 .active-badge {
@@ -1096,6 +1189,18 @@ a {
   background: #f0fdf4;
 }
 
+.proj-screenshot.amber {
+  background: #fff7ed;
+}
+
+.proj-screenshot.dark {
+  background: #f3f4f6;
+}
+
+.proj-screenshot.wine {
+  background: #fdf2f8;
+}
+
 .fake-ui {
   width: 90%;
   overflow: hidden;
@@ -1115,6 +1220,22 @@ a {
 
 .fake-ui-bar.facebook {
   background: #1877f2;
+}
+
+.proj-screenshot.amber .fake-ui-bar {
+  background: #b45309;
+}
+
+.proj-screenshot.dark .fake-ui-bar {
+  background: #111827;
+}
+
+.proj-screenshot.green .fake-ui-bar {
+  background: #15803d;
+}
+
+.proj-screenshot.wine .fake-ui-bar {
+  background: #9f1239;
 }
 
 .fake-ui-row {
