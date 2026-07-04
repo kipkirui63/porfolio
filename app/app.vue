@@ -42,7 +42,7 @@ const experienceItems = [
     className: 'crispai',
     logo: 'https://businessintelligenceagent.crispai.ca/crisp-logo.png'
   },
-  { label: 'Fuzu LTD', short: 'F', className: 'iub' }
+  { label: 'Eco Verify', short: 'E', className: 'iub' }
 ]
 
 const resumeTags = ['AI/ML', 'Backend', 'Cloud']
